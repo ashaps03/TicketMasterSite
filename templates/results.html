@@ -1,0 +1,59 @@
+{% extends 'ticketmaster.html' %}
+{% block content %}
+    {% if events %}
+        <div class="container" id="results_outer_container">
+            <div class="row justify-content-center my-4 shadow">
+                <div class="col bg-white p-4 ">
+                    {% if events == 0 %}
+                        <h6 class="fs-5 mb-0 pb-0" id="no_results">Sorry... No results were found for the entered search
+                            term
+                            and
+                            city.</h6>
+                    {% else %}
+                        <h5 class="text-secondary fs-3 pt-3" id="results_found"><span
+                                id="num-events"></span>{{ events }}
+                            events
+                            found</h5>
+                        <div class="my-4" id="results-container">
+                        {% for event in event_list %}
+                            <div class="card m-2 my-4 rounded shadow ">
+                                <div class="row g-0">
+                                    <div class="col-md-4">
+                                        <div class="container-fluid my-sm-5 m-1">
+                                            <img src="{{ event.image }}" class="img-fluid " alt="{{ event.name }}">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col">
+                                                    <h2 class="card-title text-black py-3">{{ event.name }}</h2>
+                                                    <h2 class="card-text text-secondary fw-normal py-4">{{ event.venue }}</h2>
+                                                    <p class="card-text text-secondary m-0">{{ event.address }}</p>
+                                                    <p class="card-text text-secondary ">{{ event.city }}, {{ event.state }}</p>
+                                                    <a href="{{ event.url }}">
+                                                        <button type="button" class="btn bg-primary text-white my-2">
+                                                            Find
+                                                            tickets
+                                                        </button>
+                                                    </a>
+                                                </div>
+                                                <div class="col text-end text-success">
+                                                    <h2 class="card-title">{{ event.date }}</h2>
+                                                    <h5 class="card-text">{{ event.time }}</h5>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        {% endfor %}
+
+                    {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
