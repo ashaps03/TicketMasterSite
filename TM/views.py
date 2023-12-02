@@ -3,6 +3,8 @@ import requests
 from datetime import datetime
 import pytz
 from django.contrib import messages
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 
 
 def get_events(searchTerm, location):
@@ -54,7 +56,7 @@ def parse_data(data):
             venue_name = venue["name"]
             city = venue["city"]["name"]
             state = venue["state"]["name"]
-            address= venue["address"]["line1"]
+            address = venue["address"]["line1"]
             url = event["url"]
 
             event_details = {
@@ -80,10 +82,10 @@ def tm_view(request):
         location = request.POST['location']
 
         if not search_term:
-            messages.info(request,"Search term cannot be empty. Please enter a search term.")
+            messages.info(request, "Search term cannot be empty. Please enter a search term.")
             return redirect('ticketmaster_view')
         if not location:
-            messages.info(request,"City cannot be empty. Please enter a city.")
+            messages.info(request, "City cannot be empty. Please enter a city.")
             return redirect('ticketmaster_view')
         data = get_events(search_term, location)
         if data is None:
@@ -93,3 +95,53 @@ def tm_view(request):
             data = parse_data(data)
             return render(request, 'results.html', context=data)
     return render(request, 'results.html')
+
+
+def home_page(request):
+    if request.method == "POST":
+        search_term = request.POST['searchTerm']
+        location = request.POST['location']
+
+        if not search_term:
+            messages.info(request, "Search term cannot be empty. Please enter a search term.")
+            return redirect('ticketmaster_view')
+        if not location:
+            messages.info(request, "City cannot be empty. Please enter a city.")
+            return redirect('ticketmaster_view')
+        data = get_events(search_term, location)
+        if data is None:
+            messages.info(request, 'The server encountered an issue while fetching data. Please try again later.')
+            return redirect('ticketmaster_view')
+        else:
+            data = parse_data(data)
+            return render(request, 'results.html', context=data)
+
+    return render(request, 'home.html')
+
+
+def register_view(request):
+    if request.method == "POST":
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('login')
+    else:
+        form = UserCreationForm()
+    return render(request, 'register.html', {'form': form})
+
+
+def login_page(request):
+    if request.method == 'POST':
+        form = AuthenticationForm(data=request.POST)
+        if form.is_valid():
+            user = form.get_user()
+            login(request, user)
+            return redirect('home')
+    else:
+        form = AuthenticationForm()
+    return render(request, 'login.html', {'form': form})
+
+def logout_view(request):
+    logout(request)
+    messages.info(request, "Successfully logged out.")
+    return redirect('ticketmaster_view')

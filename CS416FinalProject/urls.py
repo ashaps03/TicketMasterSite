@@ -20,5 +20,8 @@ from TM import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('',views.tm_view, name="ticketmaster_view"),
+    path('home/',views.tm_view, name="ticketmaster_view"),
+    path('', views.home_page, name="home"),
+    path('login/',views.login_page, name="login"),
+    path('register/',views.register_view, name ="register")
 ]
