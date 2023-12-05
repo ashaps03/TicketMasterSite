@@ -1,3 +1,4 @@
+{% csrf_token %}
 {% load static %}
 <!doctype html>
 <html lang="en">
@@ -6,18 +7,46 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>TicketMaster</title>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <style>
+
+
         img {
             width: 100%;
             height: 15vw;
             object-fit: cover;
         }
+              .like-button {
+            cursor: pointer;
+        }
+
+        .like-icon {
+            fill: black;
+            transition: fill 0.3s ease;
+        }
+
+        .like-icon.clicked {
+            fill: red;
+        }
+
+        .like-icon:hover {
+            fill: red;
+        }
+
     </style>
 </head>
 <body class="bg-light">
 <div class="fluid-container bg-primary">
+<div class="overlay-button-container position-absolute top-0 end-0 p-3 ">
+    <a href="{% url 'form_page' %}" class="text-decoration-none">
+        <button type="button" class="btn btn-danger overlay-button ">Concert Match</button>
+    </a>
+</div>
+
     <div class="container">
         <div class="row justify-content-center">
             <div class="col text-center text-white m-4 mt-5">
@@ -51,5 +80,34 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
         crossorigin="anonymous"></script>
+<script>
+    $(document).ready(function () {
+        // Attach a click event handler to the like button
+        $(".like-button").click(function () {
+            // Get the event ID from the data attribute
+            var eventId = $(this).data("event-id");
+
+            // Send a POST request to the server to like the event
+            $.ajax({
+                type: 'POST',
+                url: '{% url "like_event" %}',  // Update with your actual URL
+                data: { event_id: eventId },
+                success: function (response) {
+                    if (response.success) {
+                        // Update UI or show a message indicating the event was liked
+                        alert('Event liked!');
+                    } else {
+                        // Handle the case where the event was not liked
+                        alert('Failed to like the event.');
+                    }
+                },
+                error: function () {
+                    // Handle AJAX request failure
+                    alert('Error in the AJAX request.');
+                }
+            });
+        });
+    });
+</script>
 </body>
 </html>

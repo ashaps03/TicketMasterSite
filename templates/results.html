@@ -5,16 +5,13 @@
             <div class="row justify-content-center my-4 shadow">
                 <div class="col bg-white p-4 ">
                     {% if events == 0 %}
-                        <h6 class="fs-5 mb-0 pb-0" >Sorry... No results were found for the entered search
-                            term
-                            and
-                            city.</h6>
+                        <h6 class="fs-5 mb-0 pb-0" >Sorry... No results were found for the entered search term and city.</h6>
                     {% else %}
                         <h5 class="text-secondary fs-3 pt-3">{{ events }}
                             events
                             found</h5>
                         <div class="my-4">
-                        {% for event, artist in event_list %}
+                        {% for event in event_list %}
                             <div class="card m-2 my-4 rounded shadow ">
                                 <div class="row g-0">
                                     <div class="col-md-4">
@@ -36,7 +33,9 @@
                                                             tickets
                                                         </button>
                                                     </a>
-                                                    <h1>{{ artist.genre }}</h1>
+                                                    <button class="btn like-button" data-event-id="{{ event.id }}">
+                                                            <span class="like-icon material-icons-outlined">Like</span>
+                                                        </button>
                                                 </div>
                                                 <div class="col text-end text-success">
                                                     <h2 class="card-title">{{ event.date }}</h2>
