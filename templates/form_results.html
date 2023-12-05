@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container my-5">
+        <div class="card">
+            <div class="card-header bg-body-tertiary text-bg-info">
+                <h1 class="mb-0">Concert Results</h1>
+            </div>
+            <div class="card-body">
+                {% if events %}
+                    <p>{{ events }} events found:</p>
+                    {% for event in event_list %}
+                        <div class="card mb-3">
+                            <img src="{{ event.image }}" class="card-img-top" alt="{{ event.name }}">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ event.name }}</h5>
+                                <p class="card-text">{{ event.date }} at {{ event.time }}</p>
+                                <p class="card-text">{{ event.venue }}, {{ event.city }}, {{ event.state }}</p>
+                                <a href="{{ event.url }}" class="btn btn-primary" target="_blank">View Details</a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p>No events found for your preferences.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

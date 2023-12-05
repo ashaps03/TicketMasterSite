@@ -1,0 +1,29 @@
+{% extends 'ticketmaster.html' %}
+
+{% block content %}
+    <div class="container">
+        <div class="row justify-content-center my-4 shadow">
+            <div class="col bg-white p-4">
+                <h5 class="text-secondary fs-3 pt-3">Add Your Favorite Genres and Artists</h5>
+
+                <!-- Your form to collect user input -->
+                <form method="post" action="{% url 'save_preferences' %}">
+                    {% csrf_token %}
+
+                    <!-- Add form fields for favorite genres and artists -->
+                    <div class="mb-3">
+                        <label for="favorite_genres" class="form-label">Favorite Genres:</label>
+                        <input type="text" class="form-control" id="favorite_genres" name="favorite_genres" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="favorite_artists" class="form-label">Favorite Artists:</label>
+                        <input type="text" class="form-control" id="favorite_artists" name="favorite_artists" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Save Preferences</button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
