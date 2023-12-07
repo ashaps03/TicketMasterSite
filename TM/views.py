@@ -5,6 +5,7 @@ import pytz
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from spotify import spotifyAPI
 
 
 def get_events(searchTerm, location):
@@ -93,6 +94,7 @@ def tm_view(request):
             return redirect('ticketmaster_view')
         else:
             data = parse_data(data)
+            spotifyAPI.retrieve_artist_data(data)
             return render(request, 'results.html', context=data)
     return render(request, 'results.html')
 
@@ -114,6 +116,7 @@ def home_page(request):
             return redirect('ticketmaster_view')
         else:
             data = parse_data(data)
+            spotifyAPI.retrieve_artist_data(data)
             return render(request, 'results.html', context=data)
 
     return render(request, 'home.html')
