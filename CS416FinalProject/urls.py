@@ -29,5 +29,5 @@ urlpatterns = [
     path('like_event/', views.like_event, name='like_event'),
     path('liked_events/', LikedEventListView.as_view(), name='liked_events'),
     path('remove_from_liked/<int:event_id>/', views.remove_from_liked, name='remove_from_liked'),
-
+    path('audio/', views.audio, name='audio'),
 ]

@@ -13,6 +13,7 @@ from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 
 from TM.models import Event, LikedEvent
+from spotify.spotifyAPI import retrieve_artist_data
 
 
 def get_events(searchTerm, location):
@@ -230,3 +231,12 @@ def remove_from_liked(request, event_id):
             return JsonResponse({'success': False, 'message': 'Event not found'})
     else:
         return JsonResponse({'success': False, 'message': 'Invalid request method'})
+
+
+def audio(request, data=None):
+    if data is None:
+        data = {}
+
+    retrieve_artist_data(data)
+
+    return render(request, 'audio.html', {'data': data})
