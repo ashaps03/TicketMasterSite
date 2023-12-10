@@ -48,3 +48,24 @@ class LikedEventListView(View):
         liked_events = LikedEvent.objects.filter(user=request.user)
         context = {'liked_events': liked_events}
         return render(request, self.template_name, context)
+
+class Artist(models.Model):
+    name = models.CharField(max_length=255)
+    artist_id = models.CharField(max_length=255)
+    genre = models.CharField(max_length=255)
+    url = models.URLField()
+    image = models.URLField()
+
+class TopTrack(models.Model):
+    artist = models.ForeignKey(Artist, on_delete=models.CASCADE)
+    name = models.CharField(max_length=255)
+    album = models.CharField(max_length=255)
+    image = models.URLField()
+    url = models.URLField()
+    preview = models.URLField()
+
+class SimilarArtist(models.Model):
+    artist = models.ForeignKey(Artist, on_delete=models.CASCADE)
+    name = models.CharField(max_length=255)
+    image = models.URLField()
+    url = models.URLField()

@@ -75,7 +75,14 @@ def get_related_to_artist(token, artist_id):
 
 def retrieve_artist_data(data):
     artists = []
-    event_list = data['event_list']
+
+    # Check if 'event_list' key exists in data
+    if 'event_list' in data:
+        event_list = data['event_list']
+    else:
+        print("Key 'event_list' not found in data")
+        return
+
     for event in event_list:
         artists.append(event['name'])
     token = get_token()
