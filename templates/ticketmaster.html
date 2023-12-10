@@ -20,30 +20,19 @@
             height: 15vw;
             object-fit: cover;
         }
-              .like-button {
-            cursor: pointer;
-        }
 
-        .like-icon {
-            fill: black;
-            transition: fill 0.3s ease;
+        #likeButton.clicked {
+            background-color: darkred;
+            border-color: #0000FF;
+            color: #ffffff;
         }
-
-        .like-icon.clicked {
-            fill: red;
-        }
-
-        .like-icon:hover {
-            fill: red;
-        }
-
     </style>
 </head>
 <body class="bg-light">
 <div class="fluid-container bg-primary">
 <div class="overlay-button-container position-absolute top-0 end-0 p-3 ">
-    <a href="{% url 'form_page' %}" class="text-decoration-none">
-        <button type="button" class="btn btn-danger overlay-button ">Concert Match</button>
+    <a href="{% url 'liked_events' %}" class="text-decoration-none">
+        <button type="button" class="btn btn-danger overlay-button ">Liked Events</button>
     </a>
 </div>
 
@@ -65,6 +54,7 @@
                     <button class="btn bg-danger text-white " type="submit" id="button-addon2">SEARCH</button>
                 </div>
             </form>
+
             {% for message in messages %}
                 <div class="alert alert-danger p-3" role="alert" id="error">
                     {{ message }}
@@ -81,29 +71,39 @@
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
         crossorigin="anonymous"></script>
 <script>
-    $(document).ready(function () {
-        // Attach a click event handler to the like button
-        $(".like-button").click(function () {
-            // Get the event ID from the data attribute
-            var eventId = $(this).data("event-id");
+    var csrfToken = '{{ csrf_token }}';
 
-            // Send a POST request to the server to like the event
+    $(document).ready(function () {
+        $(".like-button").click(function () {
+            var cardData = {
+                name: $(this).closest('.card').find('.card-title').text(),
+                venue: $(this).closest('.card').find('.card-text').eq(0).text(),
+                address: $(this).closest('.card').find('.card-text').eq(1).text(),
+                cityState: $(this).closest('.card').find('.card-text').eq(2).text(),
+            };
+            $(this).addClass('clicked');
+
+            $.ajaxSetup({
+                beforeSend: function (xhr, settings) {
+                    if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
+                        xhr.setRequestHeader("X-CSRFToken", csrfToken);
+                    }
+                }
+            });
+
             $.ajax({
                 type: 'POST',
-                url: '{% url "like_event" %}',  // Update with your actual URL
-                data: { event_id: eventId },
+                url: '{% url "like_event" %}',
+                data: cardData,
                 success: function (response) {
                     if (response.success) {
-                        // Update UI or show a message indicating the event was liked
-                        alert('Event liked!');
+                        alert('Card added to likes!');
                     } else {
-                        // Handle the case where the event was not liked
-                        alert('Failed to like the event.');
+                        alert(response.message);
                     }
                 },
                 error: function () {
-                    // Handle AJAX request failure
-                    alert('Error in the AJAX request.');
+                    alert('Error');
                 }
             });
         });
