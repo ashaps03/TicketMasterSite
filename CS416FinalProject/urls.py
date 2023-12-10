@@ -17,7 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from TM import views
-from TM.views import form_page, like_event
+from TM.models import LikedEventListView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -25,12 +25,9 @@ urlpatterns = [
     path('', views.home_page, name="home"),
     path('login/',views.login_page, name="login"),
     path('register/',views.register_view, name ="register"),
-    path('like_event/', views.LikedEvent, name='like_event'),
-    path('likes/', views.likes, name='likes'),
-    path('form_page/', form_page, name='form_page'),
-    path('submit_profile/', views.submit_profile, name='submit_profile'),
-    path('form_results/', views.form_results, name='form_results'),
     path('get_events/', views.get_events, name='get_events'),
-    path('like_event/', like_event, name='like_event')
+    path('like_event/', views.like_event, name='like_event'),
+    path('liked_events/', LikedEventListView.as_view(), name='liked_events'),
+    path('remove_from_liked/<int:event_id>/', views.remove_from_liked, name='remove_from_liked'),
 
 ]
