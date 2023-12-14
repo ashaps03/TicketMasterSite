@@ -116,6 +116,7 @@ def tm_view(request):
             data = parse_data(data)
             events = data['event_list']
             artists = spotifyAPI.retrieve_artist_data(data)
+            print(artists)
             events_artists = zip(events, artists)
             data.update({'event_list': events_artists})
             return render(request, 'results.html', context=data)
