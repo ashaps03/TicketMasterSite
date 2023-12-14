@@ -16,7 +16,7 @@ from TM.models import Event, LikedEvent
 from spotify import spotifyAPI
 from spotify.spotifyAPI import retrieve_artist_data
 
-
+@login_required
 def get_events(searchTerm, location):
     try:
         url = "https://app.ticketmaster.com/discovery/v2/events.json"
@@ -35,7 +35,7 @@ def get_events(searchTerm, location):
         print(f"Request failed: {e}")
         return None
 
-
+@login_required
 def get_highest_resolution_image(images):
     if images:
         # Sort images by width in descending order
@@ -97,7 +97,7 @@ def parse_data(data):
         return return_data
 
 
-# Create your views here.
+@login_required
 def tm_view(request):
     if request.method == "POST":
         search_term = request.POST['searchTerm']
@@ -119,7 +119,7 @@ def tm_view(request):
             return render(request, 'results.html', context=data)
     return render(request, 'results.html')
 
-
+@login_required
 def home_page(request):
     if request.method == "POST":
         search_term = request.POST['searchTerm']
@@ -165,15 +165,17 @@ def login_page(request):
         form = AuthenticationForm()
     return render(request, 'login.html', {'form': form})
 
+@login_required
 def logout_view(request):
     logout(request)
     messages.info(request, "Successfully logged out.")
     return redirect('ticketmaster_view')
 
-
+@login_required
 def likes(request):
     return None
 
+@login_required
 class EventView(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
@@ -224,6 +226,7 @@ def like_event(request):
     else:
         return JsonResponse({'success': False, 'message': 'Invalid request'})
 
+@login_required
 def remove_from_liked(request, event_id):
     if request.method == 'DELETE':
         try:
@@ -236,6 +239,7 @@ def remove_from_liked(request, event_id):
         return JsonResponse({'success': False, 'message': 'Invalid request method'})
 
 
+@login_required
 def audio(request, data=None):
     if data is None:
         data = {}

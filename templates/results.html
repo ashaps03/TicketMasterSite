@@ -1,5 +1,6 @@
 {% extends 'ticketmaster.html' %}
 {% block content %}
+    {% if user.is_authenticated %}
     {% if success %}
         <div class="container">
             <div class="row justify-content-center my-4 shadow">
@@ -54,6 +55,12 @@
                     </div>
                 </div>
             </div>
+        </div>
+    {% endif %}
+    {% else %}
+        <div>
+            <a class="btn btn-danger" href={% url 'login' %}>Login</a>
+            <a class="btn btn-danger" href={% url 'register' %}>Register</a>
         </div>
     {% endif %}
 {% endblock %}
