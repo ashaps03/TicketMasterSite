@@ -13,6 +13,7 @@ from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 
 from TM.models import Event, LikedEvent
+from spotify import spotifyAPI
 from spotify.spotifyAPI import retrieve_artist_data
 
 
@@ -114,6 +115,7 @@ def tm_view(request):
             return redirect('ticketmaster_view')
         else:
             data = parse_data(data)
+            spotifyAPI.retrieve_artist_data(data)
             return render(request, 'results.html', context=data)
     return render(request, 'results.html')
 
@@ -135,6 +137,7 @@ def home_page(request):
             return redirect('ticketmaster_view')
         else:
             data = parse_data(data)
+            spotifyAPI.retrieve_artist_data(data)
             return render(request, 'results.html', context=data)
 
     return render(request, 'home.html')
