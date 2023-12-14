@@ -45,7 +45,9 @@ def get_songs_by_artist(token, artist_id):
     url = f"https://api.spotify.com/v1/artists/{artist_id}/top-tracks?country=US"
     headers = get_auth_header(token)
     result = get(url, headers=headers)
+    print(result)
     json_result = json.loads(result.content)["tracks"]
+    print(json_result)
     track_list = []
     for t in json_result:
         track = {}
@@ -97,6 +99,8 @@ def retrieve_artist_data(data):
             info.update({"genre": res['genres'][0]})
             info.update({"url": res['external_urls']['spotify']})
             info.update({'image': res['images'][0]['url']})
+            print(res)
+            print(artist_id)
             res = get_songs_by_artist(token, artist_id)
             info.update({"top tracks": res})
             res = get_related_to_artist(token, artist_id)

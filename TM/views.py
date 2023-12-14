@@ -114,11 +114,11 @@ def tm_view(request):
             return redirect('ticketmaster_view')
         else:
             data = parse_data(data)
-            events = data['event_list']
-            artists = spotifyAPI.retrieve_artist_data(data)
-            print(artists)
-            events_artists = zip(events, artists)
-            data.update({'event_list': events_artists})
+            # events = data['event_list']
+            # artists = spotifyAPI.retrieve_artist_data(data)
+            # print(artists)
+            # events_artists = zip(events, artists)
+            # data.update({'event_list': events_artists})
             return render(request, 'results.html', context=data)
     return render(request, 'results.html')
 
