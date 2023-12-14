@@ -114,29 +114,32 @@ def tm_view(request):
             return redirect('ticketmaster_view')
         else:
             data = parse_data(data)
-            spotifyAPI.retrieve_artist_data(data)
+            events = data['event_list']
+            artists = spotifyAPI.retrieve_artist_data(data)
+            events_artists = zip(events, artists)
+            data.update({'event_list': events_artists})
             return render(request, 'results.html', context=data)
     return render(request, 'results.html')
 
 
 def home_page(request):
-    if request.method == "POST":
-        search_term = request.POST['searchTerm']
-        location = request.POST['location']
-        if not search_term:
-            messages.info(request, "Search term cannot be empty. Please enter a search term.")
-            return redirect('ticketmaster_view')
-        if not location:
-            messages.info(request, "City cannot be empty. Please enter a city.")
-            return redirect('ticketmaster_view')
-        data = get_events(search_term, location)
-        if data is None:
-            messages.info(request, 'The server encountered an issue while fetching data. Please try again later.')
-            return redirect('ticketmaster_view')
-        else:
-            data = parse_data(data)
-            spotifyAPI.retrieve_artist_data(data)
-            return render(request, 'results.html', context=data)
+    # if request.method == "POST":
+    #     search_term = request.POST['searchTerm']
+    #     location = request.POST['location']
+    #     if not search_term:
+    #         messages.info(request, "Search term cannot be empty. Please enter a search term.")
+    #         return redirect('ticketmaster_view')
+    #     if not location:
+    #         messages.info(request, "City cannot be empty. Please enter a city.")
+    #         return redirect('ticketmaster_view')
+    #     data = get_events(search_term, location)
+    #     if data is None:
+    #         messages.info(request, 'The server encountered an issue while fetching data. Please try again later.')
+    #         return redirect('ticketmaster_view')
+    #     else:
+    #         data = parse_data(data)
+    #         spotifyAPI.retrieve_artist_data(data)
+    #         return render(request, 'results.html', context=data)
 
     return render(request, 'home.html')
 
