@@ -17,7 +17,6 @@ from spotify import spotifyAPI
 from spotify.spotifyAPI import retrieve_artist_data
 
 
-@login_required(redirect_field_name=None)
 def get_events(searchTerm, location):
     try:
         url = "https://app.ticketmaster.com/discovery/v2/events.json"
@@ -103,7 +102,6 @@ def tm_view(request):
     if request.method == "POST":
         search_term = request.POST['searchTerm']
         location = request.POST['location']
-
         if not search_term:
             messages.info(request, "Search term cannot be empty. Please enter a search term.")
             return redirect('ticketmaster_view')
@@ -125,7 +123,6 @@ def home_page(request):
     if request.method == "POST":
         search_term = request.POST['searchTerm']
         location = request.POST['location']
-
         if not search_term:
             messages.info(request, "Search term cannot be empty. Please enter a search term.")
             return redirect('ticketmaster_view')
