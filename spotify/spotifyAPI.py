@@ -99,5 +99,6 @@ def retrieve_artist_data(data):
         except TypeError:
             continue
         artists_data.append(info)
-    print(artists_data)
+    return artists_data
+    #print(artists_data)
 

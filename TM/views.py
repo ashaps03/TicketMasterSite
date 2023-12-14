@@ -94,8 +94,11 @@ def tm_view(request):
             return redirect('ticketmaster_view')
         else:
             data = parse_data(data)
-            spotifyAPI.retrieve_artist_data(data)
-            return render(request, 'results.html', context=data)
+            spotify_data = spotifyAPI.retrieve_artist_data(data)
+            event_list = data['event_list']
+            events_artists = zip(event_list, spotify_data)
+            data.update({"event_list": events_artists})
+            return render(request, 'results.html', data)
     return render(request, 'results.html')
 
 
@@ -116,9 +119,11 @@ def home_page(request):
             return redirect('ticketmaster_view')
         else:
             data = parse_data(data)
-            spotifyAPI.retrieve_artist_data(data)
-            return render(request, 'results.html', context=data)
-
+            spotify_data = spotifyAPI.retrieve_artist_data(data)
+            event_list = data['event_list']
+            events_artists = zip(event_list, spotify_data)
+            data.update({"event_list": events_artists})
+            return render(request, 'results.html', data)
     return render(request, 'home.html')
 
 
