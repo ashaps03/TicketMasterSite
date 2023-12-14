@@ -17,7 +17,7 @@ from spotify import spotifyAPI
 from spotify.spotifyAPI import retrieve_artist_data
 
 
-@login_required(login_url='',redirect_field_name=None)
+@login_required(redirect_field_name=None)
 def get_events(searchTerm, location):
     try:
         url = "https://app.ticketmaster.com/discovery/v2/events.json"
@@ -98,7 +98,7 @@ def parse_data(data):
         return return_data
 
 
-@login_required(login_url='', redirect_field_name=None)
+@login_required(redirect_field_name=None)
 def tm_view(request):
     if request.method == "POST":
         search_term = request.POST['searchTerm']
@@ -167,19 +167,19 @@ def login_page(request):
     return render(request, 'login.html', {'form': form})
 
 
-@login_required(login_url='', redirect_field_name=None)
+@login_required( redirect_field_name=None)
 def logout_view(request):
     logout(request)
     messages.info(request, "Successfully logged out.")
     return redirect('ticketmaster_view')
 
 
-@login_required(login_url='', redirect_field_name=None)
+@login_required(redirect_field_name=None)
 def likes(request):
     return None
 
 
-@login_required(login_url='', redirect_field_name=None)
+@login_required(redirect_field_name=None)
 class EventView(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
@@ -197,7 +197,7 @@ class EventView(models.Model):
         return self.name
 
 
-@login_required(login_url='', redirect_field_name=None)
+@login_required( redirect_field_name=None)
 @require_POST
 def like_event(request):
     if request.method == 'POST':
@@ -232,7 +232,7 @@ def like_event(request):
         return JsonResponse({'success': False, 'message': 'Invalid request'})
 
 
-@login_required(login_url='', redirect_field_name=None)
+@login_required(redirect_field_name=None)
 def remove_from_liked(request, event_id):
     if request.method == 'DELETE':
         try:
@@ -245,7 +245,7 @@ def remove_from_liked(request, event_id):
         return JsonResponse({'success': False, 'message': 'Invalid request method'})
 
 
-@login_required(login_url='', redirect_field_name=None)
+@login_required( redirect_field_name=None)
 def audio(request, data=None):
     if data is None:
         data = {}
