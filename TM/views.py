@@ -119,7 +119,6 @@ def tm_view(request):
             return render(request, 'results.html', context=data)
     return render(request, 'results.html')
 
-@login_required
 def home_page(request):
     if request.method == "POST":
         search_term = request.POST['searchTerm']
