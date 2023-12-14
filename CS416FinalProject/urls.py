@@ -21,8 +21,9 @@ from TM.models import LikedEventListView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('home/',views.tm_view, name="ticketmaster_view"),
-    path('', views.home_page, name="home"),
+    path('tm/',views.tm_view, name="ticketmaster_view"),
+    path('home/', views.home_page, name="home"),
+    path('', views.home_page),
     path('login/',views.login_page, name="login"),
     path('register/',views.register_view, name ="register"),
     path('get_events/', views.get_events, name='get_events'),
