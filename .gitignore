@@ -1,0 +1,29 @@
+# Byte-compiled / optimized / DLL files:  ignore to save space
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environments: ignore to save space
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Django stuff: sensitive information
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+
+# Configuration files in VS code
+.vs/
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+
