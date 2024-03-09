@@ -15,7 +15,11 @@ pip3 install -r requirements.txt
 ```
 python3 manage.py migrate
 ```
-6: Run the dev server
+6) Create your .env file
+```
+TICKET_MASTER_API_KEY = 'INSERT_API_KEY'
+```
+8) Run the dev server
 ```
 python3 manage.py runserver
 ```
