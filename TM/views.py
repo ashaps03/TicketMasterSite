@@ -4,6 +4,9 @@ from django.shortcuts import render, redirect
 import requests
 from datetime import datetime
 import pytz
+from dotenv import load_dotenv
+import os
+load_dotenv()
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
@@ -20,7 +23,7 @@ from spotify.spotifyAPI import retrieve_artist_data
 def get_events(searchTerm, location):
     try:
         url = "https://app.ticketmaster.com/discovery/v2/events.json"
-        apikey = "9fuArG8p0y2IDcEnEI2znyOX4GkbGgWM"
+        apikey = os.environ["TICKET_MASTER_API_KEY"]
         parameters = {
             "classificationName": searchTerm,
             "city": location,
