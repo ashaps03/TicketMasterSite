@@ -13,12 +13,12 @@
                     {% for liked_event in liked_events %}
                         <div class="darker card m-2 my-4 rounded shadow">
                             <div class="row g-0">
-                                <div class="col-md-6">
-                                    <div class="card-body">
-                                        <h1 class="card-title py-3">{{ liked_event.event_name }}</h1>
+                                <div class="dark col-md-6">
+                                    <div class=" card-body">
+                                        <h2 class="card-title  split py-3">{{ liked_event.event_name }}</h2>
                                         <h2 class="card-text text-secondary fw-normal py-4">{{ liked_event.event_venue }}</h2>
                                         <p class="card-text text-secondary">{{ liked_event.event_city }}</p>
-                                        <button type="button" class="btn btn-danger text-white my-2" onclick="removeFromLiked({{ liked_event.id }})">
+                                        <button type="button" class="btn btn-danger text-white my-2" onclick="removeFromLiked('{{ liked_event.id }}')">
                                             Unlike
                                         </button>
                                         
@@ -38,7 +38,7 @@
                             document.getElementById('event-time-{{ liked_event.id }}').innerText = new Date('{{ liked_event.event_time }}').toLocaleTimeString();
 
                             document.addEventListener('DOMContentLoaded', function () {
-                                var eventNames = document.querySelectorAll('.card-title.text-black');
+                                var eventNames = document.querySelectorAll('.card-title.split');
 
                                 eventNames.forEach(function (eventName) {
                                     var originalText = eventName.textContent.trim();
