@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>TicketMaster</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+</head>
+<body class="bg-primary">
+<div class="container min-vh-100 d-flex flex-column align-items-center justify-content-center">
+    <div class="text-white">
+        <h1 class="display-4">Ticketmaster</h1>
+    </div>
+    <div class="text-white">
+        <h2 class="display-6 fw-bold">Quickly find tickets around you</h2>
+    </div>
+    <div class="container d-flex justify-content-center my-4 mb-5">
+
+        <div id="mobile-box">
+
+            <div class="card">
+                <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
+                    <img class="card-img-top" src="https://mdbootstrap.com/wp-content/uploads/2019/02/flam.jpg"
+                         alt="Card image cap">
+                    <a href="#!">
+                        <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
+                    </a>
+                </div>
+                <div class="card-body text-center">
+
+                    <h5 class="h5 font-weight-bold"><a href="#" target="_blank">Dj Flam</a></h5>
+                    <p class="mb-0">Urban Bachata remix</p>
+
+                    <audio id="music" controls>
+                        <source src="https://p.scdn.co/mp3-preview/6eafa4293d2b35b2e75ffab5ec1bba8ec00d5082?cid=9151cdacbee845b2a4d6cd8209523fa8"
+                                type="audio/mpeg">
+                    </audio>
+                    <div id="audioplayer">
+                        <i id="pButton" class="fas fa-play"></i>
+                        <div id="timeline">
+                            <div id="playhead">
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+</body>
+</html>

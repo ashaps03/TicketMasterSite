@@ -1,0 +1,89 @@
+{% extends 'ticketmaster.html' %}
+
+{% block content %}
+    {% if user.is_authenticated %}
+<div class="container">
+    <div class="row justify-content-center my-4 shadow">
+        <div class=" dark col bg-white p-4">
+            <h5 class="text-secondary fs-3 pt-3">Liked Events</h5>
+            <div class="my-4">
+                {% if liked_events.count == 0 %}
+                    <h6 class="fs-5 mb-0 pb-0">You haven't liked any events yet.</h6>
+                {% else %}
+                    {% for liked_event in liked_events %}
+                        <div class="darker card m-2 my-4 rounded shadow">
+                            <div class="row g-0">
+                                <div class="col-md-6">
+                                    <div class="card-body">
+                                        <h1 class="card-title py-3">{{ liked_event.event_name }}</h1>
+                                        <h2 class="card-text text-secondary fw-normal py-4">{{ liked_event.event_venue }}</h2>
+                                        <p class="card-text text-secondary">{{ liked_event.event_city }}</p>
+                                        <button type="button" class="btn btn-danger text-white my-2" onclick="removeFromLiked({{ liked_event.id }})">
+                                            Unlike
+                                        </button>
+                                        
+                                    </div>
+                                </div>
+                                <div class="col-md-6 text-end text-success">
+                                    <div class="card-body">
+                                        <h2 class="card-title">Date Added</h2>
+                                        <h4 class="card-title" id="event-date-{{ liked_event.id }}">{{ liked_event.event_date }}</h4>
+                                        <h5 class="card-text" id="event-time-{{ liked_event.id }}">{{ liked_event.event_time }}</h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <script>
+                            document.getElementById('event-date-{{ liked_event.id }}').innerText = new Date('{{ liked_event.event_date }}').toLocaleDateString();
+                            document.getElementById('event-time-{{ liked_event.id }}').innerText = new Date('{{ liked_event.event_time }}').toLocaleTimeString();
+
+                            document.addEventListener('DOMContentLoaded', function () {
+                                var eventNames = document.querySelectorAll('.card-title.text-black');
+
+                                eventNames.forEach(function (eventName) {
+                                    var originalText = eventName.textContent.trim();
+                                    var truncatedText = originalText.replace(/(Fri|Sat|Sun|Mon|Tue|Wed|Thu)$/i, '').trim();
+
+                                    if (originalText !== truncatedText) {
+                                        eventName.textContent = truncatedText;
+                                        eventName.title = originalText;
+                                    }
+                                });
+                            });
+
+                            function removeFromLiked(eventId) {
+                                const url = `/remove_from_liked/${eventId}/`;
+
+                                fetch(url, {
+                                    method: 'DELETE',
+                                    headers: {
+                                        'X-CSRFToken': '{{ csrf_token }}',
+                                        'Content-Type': 'application/json',
+                                    },
+                                })
+                                .then(response => {
+                                    if (response.ok) {
+                                        console.log('Event removed successfully');
+                                        location.reload();
+                                    } else {
+                                        console.error('Failed to remove event');
+                                    }
+                                })
+                                .catch(error => {
+                                    console.error('Error during removal:', error);
+                                });
+                            }
+                        </script>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+    {% else %}
+        <div>
+            <a class="btn btn-danger" href={% url 'login' %}>Login</a>
+            <a class="btn btn-danger" href={% url 'register' %}>Register</a>
+        </div>
+    {% endif %}
+{% endblock %}

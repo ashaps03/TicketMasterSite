@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block content %}
+    {% if user.is_authenticated %}
+        <form action="{% url 'ticketmaster_view' %}" method="post">
+            {% csrf_token %}
+            <div class="col input-group input-group-sm m-3 ">
+                <input type="text" aria-label="Search" name="searchTerm" class="form-control"
+                       placeholder="Search by genre, artist or event">
+                <input type="text" aria-label="Location" name="location" class="form-control"
+                       placeholder="Enter a city e.g., Hartford">
+                <button class="btn bg-danger text-white " type="submit" id="button-addon2">SEARCH</button>
+            </div>
+        </form>
+    {% else %}
+        <div>
+            <a class="btn btn-danger" href={% url 'login' %}>Login</a>
+            <a class="btn btn-danger" href={% url 'register' %}>Register</a>
+        </div>
+    {% endif %}
+{% endblock %}
