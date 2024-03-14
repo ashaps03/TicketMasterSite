@@ -174,7 +174,6 @@ def login_page(request):
 @login_required( redirect_field_name=None)
 def logout_view(request):
     logout(request)
-    messages.info(request, "Successfully logged out.")
     return redirect('ticketmaster_view')
 
 

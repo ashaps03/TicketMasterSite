@@ -28,6 +28,7 @@ urlpatterns = [
     path('register/',views.register_view, name ="register"),
     path('get_events/', views.get_events, name='get_events'),
     path('like_event/', views.like_event, name='like_event'),
+        path('logout/', views.logout_view, name='logout'),
     path('liked_events/', LikedEventListView.as_view(), name='liked_events'),
     path('remove_from_liked/<int:event_id>/', views.remove_from_liked, name='remove_from_liked'),
     path('audio/', views.audio, name='audio'),
