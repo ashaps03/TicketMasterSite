@@ -1,0 +1,60 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Spotify</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <style>
+        /* Center the content */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh; /* Set the height of the body to full viewport height */
+            margin: 0; /* Remove default margin */
+        }
+
+        h1 {
+            font-size: 100px;
+            font-weight: bold;
+        }
+
+        .dot {
+            display: inline-block;
+            margin-right: 5px; /* Adjust the spacing between dots */
+            font-size: 1.5em; /* Adjust the size of the dot */
+            vertical-align: middle; /* Align the dot vertically with adjacent text */
+            font-weight: bold;
+            horizontal-align: center;
+        }
+    </style>
+</head>
+<body class="bg-secondary">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-xs-6 text-center">
+                <!-- Add shadow class to the image -->
+                <img src="https://i1.sndcdn.com/artworks-30726309-4478-44d7-84e6-0ede5df12e82-0-t500x500.jpg" alt="Description of the image" width="225" height="225" class="shadow">
+            </div>
+            <div class="col-xs-6 text-center mt-auto ml-4">
+                <h6 class="text-left text-white p-0 mb-0">Album</h6>
+                <h1 class="text-white">Boy Meets World</h1>
+                <div class="d-flex align-items-center">
+                    <img src="https://i.scdn.co/image/ab6761610000e5eb85563828c7493e4edf175379" alt="Description of the image" width="30" height="30" class="rounded-circle mr-2">
+                    <h6 class="text-center text-white"> 
+                        <strong>Sleepy Hallow</strong> 
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-dot align-middle" viewBox="0 0 16 16">
+                            <path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3"/>
+                        </svg>  
+                        2023 
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-dot align-middle" viewBox="0 0 16 16">
+                            <path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3"/>
+                        </svg> 
+                        18 songs, 43 min 30 sec
+                    </h6> 
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
