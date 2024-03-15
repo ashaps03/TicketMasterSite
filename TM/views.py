@@ -6,6 +6,8 @@ from datetime import datetime
 import pytz
 from dotenv import load_dotenv
 import os
+
+from TM import spotifyAPI
 load_dotenv()
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
@@ -16,8 +18,10 @@ from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 
 from TM.models import Event, LikedEvent
-from spotify import spotifyAPI
-from spotify.spotifyAPI import retrieve_artist_data
+from .spotifyAPI import retrieve_artist_data
+from django.http import JsonResponse
+
+
 
 
 def get_events(searchTerm, location):
@@ -256,3 +260,40 @@ def audio(request, data=None):
     retrieve_artist_data(data)
 
     return render(request, 'audio.html', {'data': data})
+
+@login_required( redirect_field_name=None)
+def spotify_view(request):
+    # Fetch data from Spotify API using spotifyAPI.py
+    data = spotifyAPI.retrieve_artist_data()  # You may need to pass request data or parameters here
+
+    # Render HTML template with fetched data
+    return render(request, 'spotify.html', {'data': data})
+
+@login_required(redirect_field_name=None)
+def get_artist_data(request):
+    # Define your artist list here or fetch it from somewhere else
+    data = {
+        'event_list': [
+            {'name': 'Bad Bunny'},
+            {'name': 'Balvin'},
+            {'name': 'Tokischa'},
+            # Add more artists as needed
+        ]
+    }
+
+    # Retrieve artist data using the spotifyAPI module
+    artist_data = spotifyAPI.retrieve_artist_data(data)
+
+    # Return the artist data as JSON response
+    return JsonResponse(artist_data, safe=False)
+
+
+@login_required(redirect_field_name=None)
+def spotifyPage(request):
+    # Add any necessary logic here
+    return render(request, 'spotifyPage.html')  # Assuming you have a template called 'spotify_page.html'
+
+@login_required(redirect_field_name=None)
+def results(request):
+    # Add any necessary logic here
+    return render(request, 'results.html')  # Assuming you have a template called 'spotify_page.html'
