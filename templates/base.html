@@ -15,6 +15,7 @@
 </head>
 
 <style>
+    
 .source-sans-3-unique {
   font-family: "Source Sans 3", sans-serif;
   font-optical-sizing: auto;
@@ -28,16 +29,20 @@
 }
     </style>
 
+
+
 <body class="bg-primary">
+
+    
     <!--Navbar-->
     <nav class="navbar bg-primary navbar-1 border-bottom border-2 border-primary shadow-sm d-flex justify-content-center">
 
 
         <!-- Links -->
         <div class="d-flex p-3">
-            <div class="me-5"><a href="{% url 'home' %}" class="text-decoration-none source-sans-3-unique">Find Tickets</a></div>
+            <div class="me-5"><a href="{% url 'results' %}" class="text-decoration-none  source-sans-3-unique">Find Tickets</a></div>
             <div class="me-5"><a href="{% url 'liked_events' %}" class="text-decoration-none source-sans-3-unique">Liked Events</a></div>
-            <div class="me-5"><a href="#my-spotify" class="text-decoration-none source-sans-3-unique">My Spotify</a></div>
+            <div class="me-5"><a href="{% url 'spotify' %}" class="text-decoration-none source-sans-3-unique">My Spotify</a></div>
             <div><a href="{% url 'logout' %}" class="text-decoration-none source-sans-3-unique">Log-out</a></div>
         </div>
 
