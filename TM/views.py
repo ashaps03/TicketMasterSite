@@ -261,22 +261,13 @@ def audio(request, data=None):
 
     return render(request, 'audio.html', {'data': data})
 
-@login_required( redirect_field_name=None)
-def spotify_view(request):
-    # Fetch data from Spotify API using spotifyAPI.py
-    data = spotifyAPI.retrieve_artist_data()  # You may need to pass request data or parameters here
-
-    # Render HTML template with fetched data
-    return render(request, 'spotify.html', {'data': data})
 
 @login_required(redirect_field_name=None)
 def get_artist_data(request):
     # Define your artist list here or fetch it from somewhere else
     data = {
         'event_list': [
-            {'name': 'Bad Bunny'},
-            {'name': 'Balvin'},
-            {'name': 'Tokischa'},
+            {'name': 'sleepy hallow'},
             # Add more artists as needed
         ]
     }
@@ -285,13 +276,13 @@ def get_artist_data(request):
     artist_data = spotifyAPI.retrieve_artist_data(data)
 
     # Return the artist data as JSON response
-    return JsonResponse(artist_data, safe=False)
+    return render(request, 'spotify.html', {'data': artist_data})
 
 
 @login_required(redirect_field_name=None)
 def spotifyPage(request):
     # Add any necessary logic here
-    return render(request, 'spotifyPage.html')  # Assuming you have a template called 'spotify_page.html'
+    return render(request, 'spotifyPage.html')  # Assuming you have a template called 'spotifyPage.html'
 
 @login_required(redirect_field_name=None)
 def results(request):
