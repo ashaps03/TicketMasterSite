@@ -4,19 +4,32 @@
 <head>
     <title>Spotify</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.0/color-thief.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+
     <style>
         /* Center the content */
         body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh; /* Set the height of the body to full viewport height */
+        /* display: flex; */
+        /* justify-content: center; */
+        /* align-items: center; */
+         height: 100vh; */ /* Set the height of the body to full viewport height 
             margin: 0; /* Remove default margin */
+            padding: 0;
+
+        }
+        .container {
+            padding-top: 0;
+            margin-top: 0;
         }
 
         h1 {
-            font-size: 100px;
             font-weight: bold;
+            font-size: 100px; /* Default font size */
+        }
+
+        .large-font {
+            font-size: 50px; /* Set font size to 70px if album name is longer than 17 characters */
         }
 
         .dot {
@@ -27,34 +40,131 @@
             font-weight: bold;
             horizontal-align: center;
         }
+
+        @media only screen and (max-width: 1200px) {
+            h1 {
+                font-size: 85px; /* Reduce font size on smaller screens */
+            }
+        }
+
+        @media only screen and (max-width: 992px) {
+            h1 {
+                font-size: 55px; /* Reduce font size on smaller screens */
+            }
+        }
+        .custom-shadow {
+            box-shadow: 0 1rem 100rem rgba(0, 0, 0, .7);
+        }
+
+        
     </style>
 </head>
-<body class="bg-secondary">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-xs-6 text-center">
+{% for artist in data %}
+
+<body id="body" data-album-image="{{ artist.recent_album_image }}">        
+    <div class="container ml-4 mt-5">
+        <div class="row align-items-start mt-5">
+            <div class="col-xs-6 text-left ">
                 <!-- Add shadow class to the image -->
-                <img src="https://i1.sndcdn.com/artworks-30726309-4478-44d7-84e6-0ede5df12e82-0-t500x500.jpg" alt="Description of the image" width="225" height="225" class="shadow">
+                <img src="{{ artist.recent_album_image }}" alt="album image" width="225" height="225" class="custom-shadow rounded mt-5">            
             </div>
-            <div class="col-xs-6 text-center mt-auto ml-4">
+            <div class="col-xs-6 text-left mt-auto ml-4 ">
                 <h6 class="text-left text-white p-0 mb-0">Album</h6>
-                <h1 class="text-white">Boy Meets World</h1>
+                <h1 id="album-name" class="text-white col-lg">{{ artist.recent_album_name }}</h1>
                 <div class="d-flex align-items-center">
-                    <img src="https://i.scdn.co/image/ab6761610000e5eb85563828c7493e4edf175379" alt="Description of the image" width="30" height="30" class="rounded-circle mr-2">
-                    <h6 class="text-center text-white"> 
-                        <strong>Sleepy Hallow</strong> 
+                    <img src="{{ artist.artist_image }}" alt="artist image" width="30" height="30" class="rounded-circle mr-2 firstImg">
+                    <h6 class="text-left text-white"> 
+                        <strong>{{ artist.artist_name }}</strong>   <!-- Artist name -->
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-dot align-middle" viewBox="0 0 16 16">
                             <path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3"/>
                         </svg>  
-                        2023 
+                        {{ artist.recent_album_release_year }}  <!-- Album release year -->
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-dot align-middle" viewBox="0 0 16 16">
                             <path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3"/>
                         </svg> 
-                        18 songs, 43 min 30 sec
+                        <span id="album-duration">{{ artist.recent_album_duration }}</span> <!-- Album total duration -->
                     </h6> 
                 </div>
             </div>
         </div>
+        <div class="row align-items-start">
+            <div class="col-xs-6 text-left mt-4">
+                <h6 class="text-left text-white p-0 mb-0">Top Track</h6>
+                <h1 class="text-white" >
+                </div>
     </div>
+
+    <script>
+        var albumImage = "{{ artist.recent_album_image }}";
+        console.log("album image " + albumImage);
+        var albumName = document.getElementById('album-name');
+
+        if (albumName.innerHTML.length > 17) {
+            albumName.classList.add('large-font');
+        }
+
+        // Convert album duration from milliseconds to minutes and seconds
+        var albumDuration = document.getElementById('album-duration');
+        var totalSeconds = parseInt(albumDuration.innerHTML);
+        var totalMinutes = totalSeconds / 1000 / 60;
+        var displayMinutes = Math.floor(totalMinutes);
+        var displaySeconds = Math.floor((totalMinutes - displayMinutes) * 60);
+        albumDuration.innerHTML = displayMinutes + ' min ' + displaySeconds + ' sec';
+
+        
+        function rgbToBrightness(rgb) {
+            return Math.sqrt(0.299 * Math.pow(rgb[0], 2) + 0.587 * Math.pow(rgb[1], 2) + 0.114 * Math.pow(rgb[2], 2));
+        }
+
+        function sortPaletteByBrightness(palette) {
+            return palette.sort((a, b) => rgbToBrightness(b) - rgbToBrightness(a));
+        }
+
+        function rgbToString(rgb) {
+            return `rgb(${rgb[0]},${rgb[1]},${rgb[2]})`;
+        }
+
+        function adjustBrightness(rgb, adjustmentFactor) {
+            return rgb.map(channel => Math.max(0, Math.min(255, Math.round(channel + adjustmentFactor * 255))));
+        }
+
+        function setGradientBackgroundFromAlbum(elementId, albumData) {
+            var element = document.getElementById(elementId);
+            if (element && albumData) {
+                var gradient = `linear-gradient(${albumData.lightColor}, ${albumData.darkColor})`;
+                element.style.background = gradient;
+            } else {
+                console.error(`Element with ID ${elementId} or album data not found.`);
+            }
+        }
+
+        var colorThief = new ColorThief();
+        var img = new Image();
+        img.crossOrigin = 'Anonymous';
+        img.src = "{{ artist.recent_album_image }}";
+        img.onload = function() {
+            try {
+                var palette = colorThief.getPalette(img, 5);
+                console.log('Extracted palette:', palette);
+
+                palette = sortPaletteByBrightness(palette);
+
+                var baseColor = palette[palette.length-1];
+                var lightColor = adjustBrightness(baseColor, 0.); // Increase brightness by 20%
+                var darkColor = adjustBrightness(baseColor, -0.1); // Decrease brightness by 20%
+
+                var albumData = {
+                    lightColor: rgbToString(lightColor),
+                    darkColor: rgbToString(darkColor)
+                };
+
+                setGradientBackgroundFromAlbum('body', albumData);
+            } catch (error) {
+                console.error('Error extracting color:', error);
+            }
+        };
+    
+    </script>
+    {% endfor %}
 </body>
 </html>
