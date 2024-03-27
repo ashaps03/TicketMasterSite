@@ -121,8 +121,9 @@ def get_album_songs(token, album_id):
     json_result = json.loads(result.content)["items"]
     songs = [{"name": song["name"], 
               "duration": song["duration_ms"], 
-              "artist": song["artists"][0]["name"]} for song in json_result]
-    
+            "artists": ", ".join(artist["name"] for artist in song["artists"]),
+            "explicit": song["explicit"]}  
+             for song in json_result]    
     return songs
     
 
