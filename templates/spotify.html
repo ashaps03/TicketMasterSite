@@ -13,7 +13,7 @@
         /* display: flex; */
         /* justify-content: center; */
         /* align-items: center; */
-         height: 100vh; */ /* Set the height of the body to full viewport height 
+dis         height: auto; */ /* Set the height of the body to full viewport height 
             margin: 0; /* Remove default margin */
             padding: 0;
 
@@ -56,17 +56,45 @@
             box-shadow: 0 1rem 100rem rgba(0, 0, 0, .7);
         }
 
+
+        .hr-style {
+            width: calc(100% - 60px); /* Adjusted width */
+            border: none;
+            border-top: 1px solid;
+            margin-left: 30px;
+            margin-top: 0px;
+            border-color: gray;
+        }
+
+        .transparentOverlay {
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.2), black);
+            height: auto;
+        }
+
+        .grayTextColor{
+            color: #a7a7a7;
+        }
+
+        .mr-2-5 {
+            margin-right: 2.5rem;
+        }
+
+        .rowHover:hover {
+            background-color: gray;
+        }
+
+
+
         
     </style>
 </head>
 {% for artist in data %}
 
 <body id="body" data-album-image="{{ artist.recent_album_image }}">        
-    <div class="container ml-4 mt-5">
-        <div class="row align-items-start mt-5">
+    <div class="container ml-4 mt-3 mb-4">
+        <div class="row align-items-start mt-3">
             <div class="col-xs-6 text-left ">
-                <!-- Add shadow class to the image -->
-                <img src="{{ artist.recent_album_image }}" alt="album image" width="225" height="225" class="custom-shadow rounded mt-5">            
+                <img src="{{ artist.recent_album_image }}" alt="album image" width="210" height="210" class="custom-shadow rounded mt-5">            
             </div>
             <div class="col-xs-6 text-left mt-auto ml-4 ">
                 <h6 class="text-left text-white p-0 mb-0">Album</h6>
@@ -79,7 +107,7 @@
                             <path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3"/>
                         </svg>  
                         {{ artist.recent_album_release_year }}  <!-- Album release year -->
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-dot align-middle" viewBox="0 0 16 16">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-dot align-middle " viewBox="0 0 16 16">
                             <path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3"/>
                         </svg> 
                         <span id="album-duration">{{ artist.recent_album_duration }}</span> <!-- Album total duration -->
@@ -87,12 +115,44 @@
                 </div>
             </div>
         </div>
-        <div class="row align-items-start">
-            <div class="col-xs-6 text-left mt-4">
-                <h6 class="text-left text-white p-0 mb-0">Top Track</h6>
-                <h1 class="text-white" >
-                </div>
     </div>
+
+    <div class="row transparentOverlay">
+        <div class="col-xs-12 text-left mt-4 ml-5 mb-0">
+            <h6 class="text-left  p-0 grayTextColor">#</h6>            
+        </div>
+        <div class="col-xs-12 text-left mt-4 mb-0">
+            <h6 class="text-left  p-0 ml-4 grayTextColor">Title</h6>            
+        </div>
+        <div class="col d-flex justify-content-end mt-4 mr-5 mb-0"> 
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#a7a7a7" class="bi bi-clock text-center" viewBox="0 0 16 16">
+                <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71z"/>
+                <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16m7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0"/>
+            </svg>         
+        </div>
+        <hr class="hr-style">    
+        
+
+
+        {% for song in artist.recent_album_songs %}
+        <div class="row ml-0 w-100 mb-3 ">
+            <div class="col-xs-12 text-left ml-5 mb-0">
+                <h6 class="text-left p-0 grayTextColor">{{ forloop.counter }}</h6> <!-- Track number -->
+            </div>
+            <div class="col-xs-12 text-left mb-0">
+                <h6 class="text-left p-0 ml-4 text-white grayTextColor">{{ song.name }}</h6> <!-- name of track -->
+                <h6 class="text-left p-0 ml-4  grayTextColor"> {% if song.explicit %}E{% endif %}  {{ song.artists }}</h6> <!-- name of track -->
+
+            </div>
+            <div class="col d-flex justify-content-end mr-2-5 text-center"> 
+                <h6 class="p-0 grayTextColor  song-duration">{{ song.duration }}</h6> <!-- Track length -->
+            </div>
+        </div>
+        {% endfor %}
+        
+
+    </div>
+    
 
     <script>
         var albumImage = "{{ artist.recent_album_image }}";
@@ -105,11 +165,35 @@
 
         // Convert album duration from milliseconds to minutes and seconds
         var albumDuration = document.getElementById('album-duration');
-        var totalSeconds = parseInt(albumDuration.innerHTML);
-        var totalMinutes = totalSeconds / 1000 / 60;
-        var displayMinutes = Math.floor(totalMinutes);
-        var displaySeconds = Math.floor((totalMinutes - displayMinutes) * 60);
-        albumDuration.innerHTML = displayMinutes + ' min ' + displaySeconds + ' sec';
+        var totalMilliseconds = parseInt(albumDuration.innerHTML);
+        var totalSeconds = totalMilliseconds / 1000;
+        var totalMinutes = totalSeconds / 60;
+
+        var displayHours = Math.floor(totalMinutes / 60);
+        var remainingMinutes = Math.floor(totalMinutes % 60);
+        var displaySeconds = Math.floor(totalSeconds % 60);
+
+        if (displayHours > 0) {
+            albumDuration.innerHTML = displayHours + ' hr ' + remainingMinutes + ' min';
+        } else {
+            albumDuration.innerHTML = remainingMinutes + ' min ' + displaySeconds + ' sec';   //fix this + clock to the right
+        }
+
+        const formatDuration = ms => {
+            const totalSeconds = Math.floor(ms / 1000);
+            const minutes = Math.floor(totalSeconds / 60);
+            const seconds = totalSeconds % 60;
+            return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
+        }
+
+        window.onload = () => {
+            document.querySelectorAll('.song-duration').forEach(el => {
+                el.innerHTML = formatDuration(parseInt(el.innerHTML));
+            });
+        }
+
+    
+        
 
         
         function rgbToBrightness(rgb) {
@@ -133,6 +217,11 @@
             if (element && albumData) {
                 var gradient = `linear-gradient(${albumData.lightColor}, ${albumData.darkColor})`;
                 element.style.background = gradient;
+
+                var hrElement = document.querySelector('.hr-style');
+        if (hrElement) {
+            hrElement.style.borderColor = albumData.lightColor;
+        }
             } else {
                 console.error(`Element with ID ${elementId} or album data not found.`);
             }
